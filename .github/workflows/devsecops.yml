@@ -6,6 +6,8 @@ on:
 jobs:
   devsecops:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ github.sha }}
     steps:
     # =========================
     # 1. Checkout
@@ -51,18 +53,24 @@ jobs:
       run: |
         cd backend/users-service
         npm ci
+        npm run lint
+        npm audit --omit=dev --audit-level=critical
         npm test
 
     - name: Install & Test academic-service
       run: |
         cd backend/academic-service
         npm ci
+        npm run lint
+        npm audit --omit=dev --audit-level=critical
         npm test
 
     - name: Install & Test api-gateway
       run: |
         cd backend/api-gateway
         npm ci
+        npm run lint
+        npm audit --omit=dev --audit-level=critical
         npm test
 
     # =========================
@@ -72,6 +80,8 @@ jobs:
       run: |
         cd frontend
         npm ci
+        npm run lint
+        npm audit --omit=dev --audit-level=critical
         npm test
     # =========================
     # 5. SAST – Semgrep
@@ -95,10 +105,10 @@ jobs:
 
     - name: Validate env files
       run: |
-        ls -la backend/users-service
-        ls -la backend/academic-service
-        ls -la backend/api-gateway
-        ls -la frontend
+        test -f backend/users-service/.env
+        test -f backend/academic-service/.env
+        test -f backend/api-gateway/.env
+        test -f frontend/.env
 
     # =========================
     # 6. Docker Build
@@ -116,21 +126,21 @@ jobs:
     - name: Trivy scan users-service
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        image-ref: users-service
-        severity: HIGH
+        image-ref: users-service:${{ github.sha }}
+        severity: CRITICAL
         exit-code: 1
 
     - name: Trivy scan academic-service
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        image-ref: academic-service
+        image-ref: academic-service:${{ github.sha }}
         severity: CRITICAL
         exit-code: 1
 
     - name: Trivy scan api-gateway
       uses: aquasecurity/trivy-action@0.20.0
       with:
-        image-ref: api-gateway
+        image-ref: api-gateway:${{ github.sha }}
         severity: CRITICAL
         exit-code: 1
 
@@ -144,7 +154,7 @@ jobs:
 
     - name: Smoke test API Gateway
       run: |
-        curl http://localhost:3000/health
+        curl -fsS http://localhost:3000/health
 
     - name: Shutdown services
       if: always()

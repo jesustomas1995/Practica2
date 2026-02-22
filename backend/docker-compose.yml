@@ -4,7 +4,7 @@ services:
   # USERS SERVICE (Auth)
   # =========================
   users-service:
-    image: users-service:latest
+    image: users-service:${IMAGE_TAG:-latest}
     build: ./users-service
     container_name: users-service
     env_file:
@@ -18,7 +18,7 @@ services:
   # ACADEMIC SERVICE (Courses)
   # =========================
   academic-service:
-    image: academic-service:latest
+    image: academic-service:${IMAGE_TAG:-latest}
     build: ./academic-service
     container_name: academic-service
     env_file:
@@ -31,7 +31,7 @@ services:
   # API GATEWAY
   # =========================
   api-gateway:
-    image: api-gateway:latest
+    image: api-gateway:${IMAGE_TAG:-latest}
     build: ./api-gateway
     container_name: api-gateway
     ports:
@@ -46,6 +46,7 @@ services:
   # FRONTEND (React SPA)
   # =========================
   frontend:
+    image: frontend:${IMAGE_TAG:-latest}
     build: ../frontend    
     container_name: frontend
     ports:
