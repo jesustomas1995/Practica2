@@ -92,7 +92,7 @@ jobs:
       run: |
         cd backend/api-gateway
         semgrep --config=auto --severity=ERROR
-    
+
     - name: Validate env files
       run: |
         ls -la backend/users-service
