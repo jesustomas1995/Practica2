@@ -97,10 +97,15 @@ Resumen de herramienta, fase y riesgo mitigado:
 ## 6. Evidencia de ejecución
 Para cumplir este punto, adjuntar:
 1. Logs del workflow en GitHub Actions.
+![alt text](assets/pipeline-log.png)
 2. Capturas de pantalla de las etapas ejecutadas.
+![alt text](assets/pipeline.png)
 3. Enlace a la ejecución (exitosa o fallida con justificación).
+4. Capturas de vulnerabilidad de las dependencias de node en los proyectos: backend y fronted
+![alt text](assets/vulnerabilidades.png)
+5. Captura de vulnerabilidades de dockerfile
+![alt text](assets/docker-vulnerabilidades.png)
 
 URLs de evidencia (completar):
-1. Ejecución en GitHub Actions: `https://github.com/<usuario>/<repo>/actions/runs/<run_id>`
-2. Logs descargados: `https://drive.google.com/<id>` o `https://onedrive.live.com/<id>`
-3. Capturas de pantalla: `https://drive.google.com/<id>` o `https://onedrive.live.com/<id>`
+1. Repositorio:  `https://github.com/jesustomas1995/Practica2`
+2. Ejecución en GitHub Actions: `https://github.com/jesustomas1995/Practica2/actions/runs/22287164091/job/64467664545`
