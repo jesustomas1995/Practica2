@@ -98,12 +98,25 @@ Escanea imágenes para CVEs en SO base y librerías internas, evitando publicar 
 8. Smoke tests con `curl -fsS` (Release/Verify)
 Comprueba salud básica del servicio en ejecución; falla si el endpoint no responde con 2xx.
 
+## Acciones de remediación de vulnerabilidades
+Se tomaron acciones para subsanar vulnerabilidades reportadas por `npm audit` y escaneos de imágenes:
+1. Actualización de dependencias directas en backend y frontend (`glob`, `cross-spawn`, `tar`, `jest`, `eslint`).
+2. Reubicación de dependencias de testing a `devDependencies` para no afectar runtime.
+3. Uso de `overrides` en `package.json` para forzar versiones seguras de dependencias transitivas (`minimatch`, `rimraf`, `node-notifier`, `qs`, `tough-cookie`, `tmp`).
+4. Regeneración de `package-lock.json` con `npm install` para sincronizar con `package.json`.
+5. Ajuste de Dockerfiles para ejecutar como usuario no-root.
+
 ## Evidencia de ejecución
 Para adjuntar evidencia del pipeline:
 1. Ejecutar el workflow en GitHub Actions (push o PR).
 2. Descargar logs del job `DevSecOps CI/CD Pipeline`.
 3. Tomar capturas de pantalla de los pasos ejecutados.
 4. Incluir enlace a la ejecución (exitosa o fallida con justificación).
+
+URLs de evidencia (completar):
+1. Ejecución en GitHub Actions: `https://github.com/<usuario>/<repo>/actions/runs/<run_id>`
+2. Logs descargados: `https://drive.google.com/<id>` o `https://onedrive.live.com/<id>`
+3. Capturas de pantalla: `https://drive.google.com/<id>` o `https://onedrive.live.com/<id>`
 
 ## Kubernetes
 kubectl apply -f k8s/users-service/

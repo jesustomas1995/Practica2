@@ -102,6 +102,10 @@ jobs:
       run: |
         cd backend/api-gateway
         semgrep --config=auto --severity=ERROR
+    - name: SAST frontend
+      run: |
+        cd frontend
+        semgrep --config=auto --severity=ERROR
 
     - name: Validate env files
       run: |
@@ -151,6 +155,14 @@ jobs:
       run: |
         docker compose -f backend/docker-compose.yml up -d
         sleep 15
+
+    - name: DAST - Unauthorized access check (courses)
+      run: |
+        status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/courses)
+        if [ "$status" -ne 401 ]; then
+          echo "Expected 401 for unauthenticated access, got $status"
+          exit 1
+        fi
 
     - name: Smoke test API Gateway
       run: |
